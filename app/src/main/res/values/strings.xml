@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">NewsFeed</string>
+    <string name="category_filter_all">All</string>
+    <string name="ok">OK</string>
+    <string name="tag_category">Category</string>
+    <string name="tag_country">Country</string>
+</resources>

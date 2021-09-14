@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/subscribe"
+        android:orderInCategory="1"
+        android:title="Provider"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/filter"
+        android:orderInCategory="2"
+        android:title="Category"
+        app:showAsAction="always" />
+
+</menu>
