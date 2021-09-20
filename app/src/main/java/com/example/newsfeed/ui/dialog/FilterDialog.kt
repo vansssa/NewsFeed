@@ -86,7 +86,7 @@ class FilterDialog : AppCompatDialogFragment() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val viewHolder: MultiChoiceViewHolder = MultiChoiceViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_multi_checked_text, parent, false)
+                    .inflate(R.layout.item_checked_text, parent, false)
             )
             viewHolder.itemView.setOnClickListener {
                 val tag: Tag = list[viewHolder.layoutPosition]

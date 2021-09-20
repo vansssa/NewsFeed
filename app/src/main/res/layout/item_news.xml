@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type="android.widget.CompoundButton" />
         <variable
             name="newsItem"
             type="com.example.newsfeed.repository.NewsItems" />
@@ -13,7 +12,8 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClickListener="@{()->mainViewModel.goToNewsDetail(newsItem)}">
 
         <TextView
             android:id="@+id/item_list_title"
@@ -26,7 +26,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@{newsItem.title}" />
+            android:text="@{newsItem.title}" />
 
         <TextView
             android:id="@+id/item_list_subtitle"
@@ -39,7 +39,7 @@
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_list_title"
-            tools:text="@{newsItem.subtitle}"
+            android:text="@{newsItem.subtitle}"
             tools:visibility="visible" />
 
         <TextView
@@ -53,7 +53,7 @@
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_list_subtitle"
-            tools:text="@{newsItem.description}"
+            android:text="@{newsItem.description}"
             tools:visibility="visible" />
 
         <TextView
@@ -71,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_list_description"
-            tools:text="@{newsItem.author}"
+            android:text="@{newsItem.author}"
             tools:visibility="visible" />
 
 
@@ -88,7 +88,7 @@
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="@{newsItem.date}"
+            android:text="@{newsItem.date}"
             tools:visibility="visible" />
 
         <ImageView

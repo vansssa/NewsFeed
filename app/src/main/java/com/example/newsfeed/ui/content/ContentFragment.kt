@@ -1,19 +1,37 @@
 package com.example.newsfeed.ui.content
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.appcompat.widget.Toolbar
+import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingUtil
+import com.example.newsfeed.MainActivity
 import com.example.newsfeed.R
+import com.example.newsfeed.databinding.ContentFragmentBinding
+import com.example.newsfeed.databinding.MainFragmentBinding
+import com.example.newsfeed.repository.NewsItems
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ContentFragment : Fragment() {
+class ContentFragment(val newsItems: NewsItems) : Fragment() {
+
+    // Data binding
+    private var _binding: ContentFragmentBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     companion object {
-        fun newInstance() = ContentFragment()
+        fun newInstance(newsItems: NewsItems) = ContentFragment(newsItems)
     }
 
     val contentViewModel: ContentViewModel by lazy {
@@ -24,12 +42,23 @@ class ContentFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.content_fragment, container, false)
+        val view = inflater.inflate(R.layout.content_fragment, container, false)
+        _binding = DataBindingUtil.bind(view)
+        initToolbar()
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
+    override fun onResume() {
+        super.onResume()
+        binding.newsItem = newsItems
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    private fun initToolbar() {
+        binding.mainToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    }
 }

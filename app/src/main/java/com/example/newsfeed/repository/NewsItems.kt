@@ -1,9 +1,12 @@
 package com.example.newsfeed.repository
 
-data class NewsItems(var id:String,
-                     var title:String,
-                     var subtitle:String,
-                     var description: String,
-                     var author: String,
-                     var date: String) {
-}
+import com.example.newsfeed.api.model.TopNewsEntity
+
+data class NewsItems(val id:String,
+                     val title:String,
+                     val subtitle:String,
+                     val description: String,
+                     val author: String,
+                     val date: String,
+                     val url: String,
+                     val fromName: String)

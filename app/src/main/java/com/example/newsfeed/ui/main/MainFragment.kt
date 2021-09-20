@@ -11,16 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.newsfeed.MainActivity
 import com.example.newsfeed.R
 import com.example.newsfeed.databinding.MainFragmentBinding
-import com.example.newsfeed.repository.HistoryRepository
-import com.example.newsfeed.repository.NewsItems
+import com.example.newsfeed.extension.launchFragment
+import com.example.newsfeed.ui.content.ContentFragment
 import com.example.newsfeed.ui.dialog.FilterDialog
 import com.example.newsfeed.ui.dialog.Tag
 import com.example.newsfeed.ui.dialog.allCategory
 import com.example.newsfeed.ui.dialog.allProviders
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -48,10 +48,12 @@ class MainFragment : Fragment(), FilterDialog.OnCategoryFilterCheckedListener,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         val view = inflater.inflate(R.layout.main_fragment, container, false)
-        _binding = DataBindingUtil.bind(view)
+        //_binding = MainFragmentBinding.bind(view) // For ViewBinding
+        _binding = DataBindingUtil.bind(view) // For DataBinding
         initUI()
-        return _binding!!.root
+        return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,22 +61,18 @@ class MainFragment : Fragment(), FilterDialog.OnCategoryFilterCheckedListener,
         setHasOptionsMenu(true)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mainViewModel.newsListLiveData.observe(viewLifecycleOwner,
-            Observer<List<NewsItems>> {
-                adapter.notifyDataSetChanged()
-            })
-
-        //mainViewModel.subListLiveData.observe(viewLifecycleOwner,
-        //    Observer<List<String>> {
-        //        mainViewModel.getAllNewsList(this.filters)
-        //    })
-    }
 
     override fun onResume() {
         super.onResume()
-        mainViewModel.getTopNewsList()
+        // Use viewLifecycleOwner instead of this: https://www.gushiciku.cn/pl/gzt6/zh-tw
+        mainViewModel.newsListLiveData.observe(viewLifecycleOwner,
+            Observer {
+                adapter.notifyDataSetChanged()
+            })
+        mainViewModel.itemClickEvent.observe(viewLifecycleOwner,
+            Observer {
+                (activity as MainActivity).launchFragment(this, ContentFragment.newInstance(it))
+            })
     }
 
     override fun onDestroy() {
@@ -131,4 +129,5 @@ class MainFragment : Fragment(), FilterDialog.OnCategoryFilterCheckedListener,
         }
         return false
     }
+
 }

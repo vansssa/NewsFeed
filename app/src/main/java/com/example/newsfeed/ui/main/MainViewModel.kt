@@ -1,7 +1,10 @@
 package com.example.newsfeed.ui.main
 
 import android.app.Application
+import androidx.databinding.BindingAdapter
+import androidx.databinding.BindingMethod
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.newsfeed.AppSharePreference
 import com.example.newsfeed.repository.NewsItems
@@ -19,6 +22,7 @@ class MainViewModel @Inject constructor(private val topNewsRepository: TopNewsRe
                                         private val appSharePreference: AppSharePreference): AndroidViewModel(application) {
 
     var newsListLiveData : MutableLiveData<List<NewsItems>> = MutableLiveData()
+    var itemClickEvent: MutableLiveData<NewsItems> = MutableLiveData()
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -40,7 +44,7 @@ class MainViewModel @Inject constructor(private val topNewsRepository: TopNewsRe
                                 NewsItems(
                                     artist.title.hashCode().toString(),
                                     artist.title, artist.description, artist.content,
-                                    artist.source.fromName, artist.published
+                                    artist.source.fromName, artist.published, artist.url, artist.source.fromName
                                 )
                             )
                         }
@@ -85,5 +89,8 @@ class MainViewModel @Inject constructor(private val topNewsRepository: TopNewsRe
         return listOf(Tag(CountryType.JAPAN.ordinal, CountryType.JAPAN.name))
     }
 
+    fun goToNewsDetail(newsItems: NewsItems) {
+        itemClickEvent.postValue(newsItems)
+    }
 
 }
