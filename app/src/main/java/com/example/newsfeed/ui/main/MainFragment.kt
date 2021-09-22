@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -62,8 +63,8 @@ class MainFragment : Fragment(), FilterDialog.OnCategoryFilterCheckedListener,
     }
 
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // Use viewLifecycleOwner instead of this: https://www.gushiciku.cn/pl/gzt6/zh-tw
         mainViewModel.newsListLiveData.observe(viewLifecycleOwner,
             Observer {
@@ -73,6 +74,11 @@ class MainFragment : Fragment(), FilterDialog.OnCategoryFilterCheckedListener,
             Observer {
                 (activity as MainActivity).launchFragment(this, ContentFragment.newInstance(it))
             })
+
+        mainViewModel.nowPage.observe(viewLifecycleOwner,
+        Observer {
+            setToolbar(it)
+        })
     }
 
     override fun onDestroy() {
@@ -90,16 +96,22 @@ class MainFragment : Fragment(), FilterDialog.OnCategoryFilterCheckedListener,
 
     private fun initUI() {
         adapter = MainAdapter(mainViewModel)
-        _binding?.mainList.let {
-            it?.layoutManager = LinearLayoutManager(context)
-            it?.adapter = adapter
+        binding.mainList.layoutManager = LinearLayoutManager(context)
+        binding.mainList.adapter = adapter
+        binding.sidebar.setOnClickListener {
+            (activity as? MainActivity)?.drawerOpenOrClose()
         }
-        setToolbar()
+        setToolbar(0)
     }
 
-    private fun setToolbar() {
-        val toolbar = _binding?.mainToolbar
-        toolbar?.setOnMenuItemClickListener(this)
+    private fun setToolbar(nowPage: Int) {
+        when (nowPage) {
+            1 -> binding.mainToolbar.menu.forEach { it.isVisible = false }
+            else -> {
+                binding.mainToolbar.menu.forEach { it.isVisible = true }
+                binding.mainToolbar.setOnMenuItemClickListener(this)
+            }
+        }
     }
 
     private fun launchCategoryFilterDialog() {

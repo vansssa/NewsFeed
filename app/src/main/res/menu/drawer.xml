@@ -7,7 +7,7 @@
             android:title="Today News" />
 
         <item
-            android:id="@+id/action_help"
+            android:id="@+id/action_history"
             android:title="What you read before?" />
 
     </group>

@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.newsfeed.AppSharePreference
+import com.example.newsfeed.repository.HistoryRepository
 import com.example.newsfeed.repository.NewsItems
 import com.example.newsfeed.repository.TopNewsRepository
 import com.example.newsfeed.ui.dialog.*
@@ -19,10 +20,12 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val topNewsRepository: TopNewsRepository,
                                         application: Application,
-                                        private val appSharePreference: AppSharePreference): AndroidViewModel(application) {
+                                        private val appSharePreference: AppSharePreference,
+                                        private val historyRepository: HistoryRepository): AndroidViewModel(application) {
 
     var newsListLiveData : MutableLiveData<List<NewsItems>> = MutableLiveData()
     var itemClickEvent: MutableLiveData<NewsItems> = MutableLiveData()
+    var nowPage: MutableLiveData<Int> = MutableLiveData()
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -44,7 +47,7 @@ class MainViewModel @Inject constructor(private val topNewsRepository: TopNewsRe
                                 NewsItems(
                                     artist.title.hashCode().toString(),
                                     artist.title, artist.description, artist.content,
-                                    artist.source.fromName, artist.published, artist.url, artist.source.fromName
+                                    artist.published, artist.url, artist.source.fromName
                                 )
                             )
                         }
@@ -93,4 +96,12 @@ class MainViewModel @Inject constructor(private val topNewsRepository: TopNewsRe
         itemClickEvent.postValue(newsItems)
     }
 
+    fun getHistoryRecords() {
+        newsListLiveData.postValue(historyRepository.getHistory())
+
+    }
+
+    fun updateToolbarStyle(page: Int) {
+        nowPage.postValue(page)
+    }
 }

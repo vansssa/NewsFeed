@@ -14,26 +14,24 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import android.webkit.WebViewClient
 import android.webkit.WebSettings
-
-
-
-
-
+import com.example.newsfeed.data.HistoryEntity
+import com.example.newsfeed.repository.NewsItems
+import java.util.*
 
 
 @HiltViewModel
-class ContentViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
-
-   init {
-
-   }
+class ContentViewModel @Inject constructor(application: Application,
+                                           val historyRepository: HistoryRepository) : AndroidViewModel(application) {
 
     @SuppressLint("SetJavaScriptEnabled")
     @BindingAdapter("{loadUrl}")
     fun WebView.loadUrl(url: String) {
-        Log.i("VA ======", "url$url")
         this.settings.javaScriptEnabled = true
+        this.webViewClient = WebViewClient()
         this.loadUrl(url)
     }
 
+    fun addHistory(newsItems: NewsItems) {
+        historyRepository.addHistory(newsItems)
+    }
 }

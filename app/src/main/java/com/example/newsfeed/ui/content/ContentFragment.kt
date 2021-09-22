@@ -48,9 +48,10 @@ class ContentFragment(val newsItems: NewsItems) : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.newsItem = newsItems
+        binding.newsItem.apply { contentViewModel.addHistory(newsItems) }
     }
 
     override fun onDestroy() {

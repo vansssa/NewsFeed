@@ -15,7 +15,7 @@ fun MainActivity.launchFragment(fromFragment: Fragment, newInstance: Fragment) {
     } else {
         transaction.hide(fromFragment)
     }
-    if (supportFragmentManager.findFragmentByTag(tag)?.isAdded == true) {
+    if (isFragmentIsVisible(tag)) {
         return
     }
     transaction.add(R.id.main_container, newInstance)
@@ -28,3 +28,6 @@ fun MainActivity.attachMainFragment(mainFragment: Fragment) {
         .replace(R.id.main_container, mainFragment, MainFragment::class.java.simpleName)
         .commitAllowingStateLoss()
 }
+
+fun MainActivity.isFragmentIsVisible(tag: String): Boolean =
+    supportFragmentManager.findFragmentByTag(tag)?.isVisible == true

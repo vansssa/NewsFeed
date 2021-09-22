@@ -36,6 +36,7 @@
                 app:menu="@menu/main">
 
                 <ImageView
+                    android:id="@+id/sidebar"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"

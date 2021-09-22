@@ -7,7 +7,7 @@ import com.example.newsfeed.data.NewsEntity.Companion.TABLE_NEWS
 
 
 @Entity(tableName = TABLE_NEWS)
-data class NewsEntity (@PrimaryKey(autoGenerate = true) var id: Int,
+data class NewsEntity (@PrimaryKey(autoGenerate = true) var id: Int = 0,
                        @ColumnInfo(name= "newsid") var newsId: String,
                        @ColumnInfo(name= "category") var categoryType: String,
                        @ColumnInfo(name= "title") var title: String?,
